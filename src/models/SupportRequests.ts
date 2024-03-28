@@ -16,7 +16,6 @@ const supportRequestSchema = new mongoose.Schema({
   clientEmail: {
     type: String,
     required: [true, "Email is required"],
-    unique: true,
     validate: {
       validator(val: string) {
         return validator.isEmail(val);
@@ -44,13 +43,13 @@ const supportRequestSchema = new mongoose.Schema({
       message: "Check your link to telegram",
     },
   },
-  clientMessge: {
+  clientMessage: {
     type: String,
     required: [true, "Message is required"],
     minlength: [10, "Minimum 10 characters"],
     maxlength: [500, "Maximum 500 characters"],
   },
-  buisnessData: {
+  businessData: {
     type: String,
     // required: [true, "buisness data is required"],
   },

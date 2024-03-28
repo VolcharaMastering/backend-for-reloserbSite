@@ -39,8 +39,8 @@ export const validateCreateRequest = celebrate({
     clientEmail: Joi.string().required().email(),
     clientPhone: phoneJoi.string().phoneNumber(),
     clientTg:Joi.string().min(8).custom(tgValidate),
-    clientMessge: Joi.string().required().min(10).max(500),
-    buisnessData:Joi.string()
+    clientMessage: Joi.string().required().min(10).max(500),
+    businessData:Joi.string()
   }),
 });
 

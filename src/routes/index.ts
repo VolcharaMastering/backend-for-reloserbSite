@@ -5,10 +5,9 @@ import NotFound from "../errors/notFound";
 import {
   addSupportRequests,
   getSupportRequests,
-  sendMail,
 } from "../controllers/supportRequests";
 import { addProjects, getProjects } from "../controllers/projects";
-// import auth from '../middlewares/auth';
+import sendMail from '../middlewares/sendMailRequest';
 
 const router = express.Router();
 // import { updateUser, aboutMe, login, createUser, getUsers } from '../controllers/users';
@@ -23,6 +22,7 @@ router.get("/addprojectorgeitnow/", getProjects);
 router.post("/addprojectorgeitnow/", addProjects);
 router.get("/requests/", getSupportRequests);
 router.post("/requests/", validateCreateRequest, sendMail, addSupportRequests);
+// router.post("/requests/", sendMail, addSupportRequests);
 
 router.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(NotFound("Page not found"));

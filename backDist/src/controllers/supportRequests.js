@@ -43,8 +43,8 @@ const addSupportRequests = (req, res, next) => __awaiter(void 0, void 0, void 0,
         typeof requestBody.clientName !== "string" ||
         typeof requestBody.clientEmail !== "string" ||
         typeof requestBody.clientPhone !== "string" ||
-        typeof requestBody.clientMessge !== "string" ||
-        typeof requestBody.buisnessData !== "string") {
+        typeof requestBody.clientMessage !== "string" ||
+        typeof requestBody.businessData !== "string") {
         next((0, requestError_1.default)("The request body must be an object with supportRequestName, supportRequestType and supportRequestCalls properties."));
         return;
     }

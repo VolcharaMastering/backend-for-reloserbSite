@@ -48,13 +48,13 @@ const supportRequestSchema = new mongoose_1.default.Schema({
             message: "Check your link to telegram",
         },
     },
-    clientMessge: {
+    clientMessage: {
         type: String,
         required: [true, "Message is required"],
         minlength: [10, "Minimum 10 characters"],
         maxlength: [500, "Maximum 500 characters"],
     },
-    buisnessData: {
+    businessData: {
         type: String,
         // required: [true, "buisness data is required"],
     },

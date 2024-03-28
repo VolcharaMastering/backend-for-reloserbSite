@@ -34,8 +34,8 @@ exports.validateCreateRequest = (0, celebrate_1.celebrate)({
         clientEmail: celebrate_1.Joi.string().required().email(),
         clientPhone: phoneJoi.string().phoneNumber(),
         clientTg: celebrate_1.Joi.string().min(8).custom(tgValidate),
-        clientMessge: celebrate_1.Joi.string().required().min(10).max(500),
-        buisnessData: celebrate_1.Joi.string()
+        clientMessage: celebrate_1.Joi.string().required().min(10).max(500),
+        businessData: celebrate_1.Joi.string()
     }),
 });
 module.exports = {

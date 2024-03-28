@@ -5,7 +5,6 @@ import IncorrectData from "../errors/requestError";
 import ServerError from "../errors/serverError";
 import SupportRequest from "../models/SupportRequests";
 import { OK_CODE, CODE_CREATED } from "../states/states";
-import transporter from "../utils/nodemailerConfig";
 
 interface forFunction {
   (req: Request, res: Response, next: NextFunction): void;
@@ -15,14 +14,9 @@ interface RequestBody {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  clientMessge: string;
-  buisnessData: string;
+  clientMessage: string;
+  businessData: string;
 }
-
-const { FORM_FROM_EMAIL, FORM_TO_EMAIL } = process.env as {
-  FORM_FROM_EMAIL: string;
-  FORM_TO_EMAIL: string;
-};
 
 export const getSupportRequests: forFunction = async (req, res, next) => {
   try {
@@ -46,8 +40,8 @@ export const addSupportRequests: forFunction = async (req, res, next) => {
     typeof requestBody.clientName !== "string" ||
     typeof requestBody.clientEmail !== "string" ||
     typeof requestBody.clientPhone !== "string" ||
-    typeof requestBody.clientMessge !== "string" ||
-    typeof requestBody.buisnessData !== "string"
+    typeof requestBody.clientMessage !== "string" ||
+    typeof requestBody.businessData !== "string"
   ) {
     next(
       IncorrectData(
@@ -56,10 +50,11 @@ export const addSupportRequests: forFunction = async (req, res, next) => {
     );
     return;
   }
-  try {    
+  try {
     const supportRequest = await new SupportRequest(requestBody).save();
-    res.status(CODE_CREATED).send({ data: supportRequest });
+    res.status(CODE_CREATED).send({ data: supportRequest, message: "Feedback email sent successfully" });
   } catch (error) {
+    console.log(error);
     if (error instanceof mongoose.Error.ValidationError) {
       next(IncorrectData("Validation error"));
       return;
@@ -72,32 +67,5 @@ export const addSupportRequests: forFunction = async (req, res, next) => {
       next(ServerError("Some bugs on server"));
       return;
     }
-  }
-};
-export const sendMail: forFunction = async (req, res, next) => {
-  const {
-    projectId,
-    clientName,
-    clientEmail,
-    clientPhone,
-    clientMessage,
-    businessData,
-  } = req.body;
-console.log("sendMail", projectId, clientName, clientEmail, clientPhone, clientMessage, businessData);
-
-  const mailOptions = {
-    from: FORM_FROM_EMAIL,
-    to: FORM_TO_EMAIL,
-    subject: `Запрос на поддержку по проекту ${projectId}`,
-    text: `Имя клиента: ${clientName}\nEmail клиента: ${clientEmail}\nТелефон клиента: ${clientPhone && clientPhone}\nТекст обращения: ${clientMessage && clientMessage}\nBusiness Data: ${businessData && businessData}`,
-  };
-
-  try {
-    await transporter.sendMail(mailOptions);
-    res.status(CODE_CREATED).send({ message: "Feedback email sent successfully" });
-  } catch (error) {
-    console.log(error);
-    next(ServerError("Failed to send feedback email"));
-    return;
   }
 };

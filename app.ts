@@ -5,11 +5,15 @@ import { errors } from 'celebrate';
 import helmet from 'helmet';
 import cors from 'cors';
 import config from './config';
-import rateLimit from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 import notFound from './src/errors/notFound';
 import errorHandler from './src/middlewares/errorHandler';
 import router from './src/routes';
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
 const { PROJ_PORT_DEV = 3000, PROJ_PORT_PROD = 3044 } = process.env;
 const environment = process.env.NODE_ENV || 'development';
 const dbConfig = environment === 'production' ? config.production.db : config.development.db;
@@ -17,8 +21,7 @@ const portConfig = environment === 'production' ? PROJ_PORT_PROD : PROJ_PORT_DEV
 const connectionString = `mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}`;
 
 const app: Express = express();
-
-app.use(rateLimit);
+app.use(limiter);
 app.use(cors());
 app.use(express.json());
 app.use(helmet());
@@ -51,4 +54,6 @@ async function connect() {
 }
 
 connect();
+
+
 
