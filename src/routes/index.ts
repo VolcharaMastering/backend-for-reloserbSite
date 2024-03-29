@@ -9,12 +9,14 @@ import {
 import { addProjects, getProjects } from "../controllers/projects";
 import sendMail from '../middlewares/sendMailRequest';
 import sendTg from "../middlewares/sendTgRequest";
+import { createUser } from "../controllers/users";
+import { validateCreateUser } from "../middlewares/usersValidator";
 
 const router = express.Router();
 // import { updateUser, aboutMe, login, createUser, getUsers } from '../controllers/users';
 
 // router.post('/signin/', validateLogin, login);
-// router.post('/signup/', validateCreateUser, createUser);
+router.post('/signup/', validateCreateUser, createUser);
 
 // router.get('/users/', getUsers);
 // router.get('/users/me', auth, aboutMe);
