@@ -24,7 +24,7 @@ export interface ProjectBody {
     lastName?: string;
     phoneNumber?: string;
     tgLink?: string;
-    interestProjects?: object[]
-    sendRequests?: object[];
+    interestProjects?: string[]
+    sendRequests?: string[];
     businessData?: string;
   }

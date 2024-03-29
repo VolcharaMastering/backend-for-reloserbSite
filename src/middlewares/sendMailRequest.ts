@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import NotFound from "../errors/notFound";
 import ServerError from "../errors/serverError";
 import Project from "../models/Projects";

@@ -1,10 +1,14 @@
+import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
 import AuthError from '../errors/authError';
 
-const auth = (req, res, next) => {
+interface forFunction {
+    (req:  Request<any, any, any, any, Record<string, any>>, res: Response, next: NextFunction): void;
+  }
+const auth: forFunction = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    next(new AuthError('Auth is needed'));
+    next(AuthError('Auth is needed'));
     return;
   }
 
@@ -12,13 +16,15 @@ const auth = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret');
+    payload = jwt.verify(token, process.env.SECRET_KEY_PROD as string, { 
+      algorithms: ["HS256"],
+    });
   } catch (e) {
-    next(new AuthError('Invalid token'));
+    next(AuthError('Invalid token'));
     return;
   }
-  req.user = payload;
+  (req as any).user = payload;
   next();
 };
 
-module.exports = auth;
+export default auth;

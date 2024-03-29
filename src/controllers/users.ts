@@ -8,21 +8,8 @@ import ServerError from "../errors/serverError";
 import User from "../models/User";
 import { OK_CODE, CODE_CREATED } from "../states/states";
 
-import { forFunction, } from "./types";
+import { forFunction, UsersBody} from "./types";
 import SupportRequests from "../models/SupportRequests";
-
-// const getUsers: forFunction = async (req, res, next) => {
-//   try {
-//     const users = await User.find({});
-//     if (!users) {
-//       next(NotFound('There is no users'));
-//       return;
-//     }
-//     res.status(OK_CODE).send(users);
-//   } catch (e) {
-//     next(ServerError('Some bugs on server'));
-//   }
-// };
 
 
 // const aboutMe: forFunction = async (req, res, next) => {
@@ -39,17 +26,6 @@ import SupportRequests from "../models/SupportRequests";
 //   }
 // };  
 
-interface UsersBody {
-    email: string;
-    password: string;
-    name: string;
-    lastName?: string;
-    phoneNumber?: string;
-    tgLink?: string;
-    interestProjects?: object[]
-    sendRequests?: string[];
-    businessData?: string;
-  }
 
 const createUser: forFunction = async (req, res, next) => {
   const {
