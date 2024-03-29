@@ -50,8 +50,6 @@ const sendMail: forFunction = async (req, res, next) => {
   
     try {
       await transporter.sendMail(mailOptions);
-    //   res
-    //     .send({ message: "Feedback email sent successfully" });
         next();
     } catch (error) {
       console.log(error);

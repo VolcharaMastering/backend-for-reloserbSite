@@ -14,6 +14,7 @@ import { validateCreateUser, validateLogin } from "../middlewares/usersValidator
 import login from "../controllers/signin";
 import getUsers from "../controllers/getUsers";
 import auth from "../middlewares/auth";
+import aboutUser from "../controllers/aboutUser";
 
 const router = express.Router();
 // import { updateUser, aboutMe, login, createUser, getUsers } from '../controllers/users';
@@ -22,7 +23,7 @@ router.post('/signin/', validateLogin, login);
 router.post('/signup/', validateCreateUser, createUser);
 
 router.get('/users/', auth, getUsers);
-// router.get('/users/me', auth, aboutMe);
+router.get('/users/me', auth, aboutUser);
 // router.patch('/users/me', auth, validateUpdateUser, updateUser);
 router.get("/addprojectorgeitnow/", getProjects);
 router.post("/addprojectorgeitnow/", addProjects);
