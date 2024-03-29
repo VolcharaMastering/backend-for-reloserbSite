@@ -1,19 +1,10 @@
-import { Request, Response, NextFunction } from "express";
 import mongoose from 'mongoose';
 import NotFound from '../errors/notFound';
 import IncorrectData from '../errors/requestError';
 import ServerError from '../errors/serverError';
 import Project from '../models/Projects';
 import { OK_CODE, CODE_CREATED } from '../states/states';
-
-interface forFunction {
-  (req: Request, res: Response, next: NextFunction): void;
-}
-interface RequestBody {
-  projectName: string;
-  projectType: string;
-  projectCalls: number;
-}
+import { forFunction, ProjectBody } from './types';
 
 export const getProjects: forFunction = async (req, res, next) => {
   try {
@@ -30,7 +21,7 @@ export const getProjects: forFunction = async (req, res, next) => {
 
 export const addProjects: forFunction = async (req, res, next) => {
   
-    const requestBody = req.body as unknown as RequestBody;
+    const requestBody = req.body as unknown as ProjectBody;
     if (typeof requestBody !== 'object' ||
         typeof requestBody.projectName !== 'string' ||
         typeof requestBody.projectType !== 'string' ||

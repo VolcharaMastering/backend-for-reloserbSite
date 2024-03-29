@@ -8,12 +8,15 @@ import {
 } from "../controllers/supportRequests";
 import { addProjects, getProjects } from "../controllers/projects";
 import sendMail from '../middlewares/sendMailRequest';
+import sendTg from "../middlewares/sendTgRequest";
+import { createUser } from "../controllers/users";
+import { validateCreateUser } from "../middlewares/usersValidator";
 
 const router = express.Router();
 // import { updateUser, aboutMe, login, createUser, getUsers } from '../controllers/users';
 
 // router.post('/signin/', validateLogin, login);
-// router.post('/signup/', validateCreateUser, createUser);
+router.post('/signup/', validateCreateUser, createUser);
 
 // router.get('/users/', getUsers);
 // router.get('/users/me', auth, aboutMe);
@@ -21,8 +24,7 @@ const router = express.Router();
 router.get("/addprojectorgeitnow/", getProjects);
 router.post("/addprojectorgeitnow/", addProjects);
 router.get("/requests/", getSupportRequests);
-router.post("/requests/", validateCreateRequest, sendMail, addSupportRequests);
-// router.post("/requests/", sendMail, addSupportRequests);
+router.post("/requests/", validateCreateRequest, sendMail, sendTg, addSupportRequests);
 
 router.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(NotFound("Page not found"));

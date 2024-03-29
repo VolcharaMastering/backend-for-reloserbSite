@@ -1,40 +1,23 @@
-import { celebrate, Joi } from 'celebrate';
-const { ObjectId } = require('mongoose').Types;
-
-const validId = (value, helpers) => {
-  if (!ObjectId.isValid(value)) {
-    return helpers.error('any.invalid');
-  }
-  return value;
-};
-
-const validLink = (value, helpers) => {
-  if (validUrl(value)) {
-    return value;
-  }
-  return helpers.error('any.invalid');
-};
-
-const textFields = (value, helpers) => {
-  const regExp = /^([\w\s-]*(?<!\.js|\.exe|\.bat|\.dll|\.msi|\.reg|\.pif|\.lnk|\.scr|\.cmd|\.com|\.vbs|\.jar|\.class|\.sh|\.pl|\.py|\.rb|\.ps1|\.php|\.htaccess|\.htpasswd|\.yml|<|>|\|&;\(\)\`\$=))+$/i;
-  if (!regExp.test(value)) {
-    return helpers.error('any.invalid');
-  }
-  return value;
-};
-
+import { celebrate, Joi } from "celebrate";
+import { validId, tgValidate } from "../utils/validateFunctions";
+const phoneJoi = Joi.extend(require("joi-phone-number"));
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().required().max(120),
+    lastName: Joi.string().required().max(150),
+    phoneNumber: phoneJoi.string().phoneNumber(),
+    tgLink: Joi.string().min(3).custom(tgValidate),
+    interestProjects: Joi.array().items(Joi.string().custom(validId)),
+    sendRequests: Joi.array().items(Joi.string().custom(validId)),
+    businessData: Joi.string(),
   }),
 });
 const validMail = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    
   }),
 });
 const validateLogin = celebrate({
@@ -57,7 +40,7 @@ const validateUpdateUser = celebrate({
   }),
 });
 
-module.exports = {
+export {
   validateLogin,
   validateCreateUser,
   validateUserId,
