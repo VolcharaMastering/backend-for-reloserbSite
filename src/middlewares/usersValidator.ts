@@ -23,22 +23,22 @@ const validateLogin = celebrate({
   }),
 });
 
-const validateUserId = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().required().custom(validId),
-  }),
-});
 
 const validateUpdateUser = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    name: Joi.string().required().min(2).max(30),
+    email: Joi.string().required().email(),
+    name: Joi.string().required().max(120),
+    lastName: Joi.string().required().max(150),
+    phoneNumber: phoneJoi.string().phoneNumber(),
+    tgLink: Joi.string().min(3).custom(tgValidate),
+    interestProjects: Joi.array().items(Joi.string().custom(validId)),
+    sendRequests: Joi.array().items(Joi.string().custom(validId)),
+    businessData: Joi.string(),
   }),
 });
 
 export {
   validateLogin,
   validateCreateUser,
-  validateUserId,
   validateUpdateUser,
 };

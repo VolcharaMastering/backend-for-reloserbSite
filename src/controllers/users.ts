@@ -11,22 +11,6 @@ import { OK_CODE, CODE_CREATED } from "../states/states";
 import { forFunction, UsersBody} from "./types";
 import SupportRequests from "../models/SupportRequests";
 
-
-// const aboutMe: forFunction = async (req, res, next) => {
-//   const myId = req.user._id;
-//   try {
-//     const me = await User.findById(myId);
-//     if (!me) {
-//       next(NotFound('No such user'));
-//       return;
-//     }
-//     res.status(OK_CODE).send(me);
-//   } catch (e) {
-//     next(ServerError('Some bugs on server'));
-//   }
-// };  
-
-
 const createUser: forFunction = async (req, res, next) => {
   const {
     email,
@@ -92,37 +76,4 @@ const createUser: forFunction = async (req, res, next) => {
 };
 
 
-// const updateUser = (req, res, next) => {
-//   const { email, name } = req.body;
-//   User.findByIdAndUpdate(
-//     req.user._id,
-//     { email, name },
-//     { new: true, runValidators: true },
-//   )
-//     .then((user) => {
-//       if (!user) {
-//         next(NotFound('No such user'));
-//         return;
-//       }
-//       res.send(user);
-//     })
-//     .catch((e) => {
-//       if (e.code === 11000) {
-//         next(ConflictError('User with this email already exists'));
-//         return;
-//       }
-//       if (e.name === 'ValidationError') {
-//         next(IncorrectData('Invalid data'));
-//         return;
-//       }
-//       next(ServerError('Some bugs on server'));
-//     });
-// };
-
-export {
-  // getUsers,
-  // login,
-  // aboutMe,
-  createUser,
-  // updateUser,
-};
+export default createUser;
