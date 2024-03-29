@@ -6,9 +6,6 @@ type ServerError = {
 }
 
 const errorHandler = (err: ServerError, req: Request, res: Response, next: NextFunction) => {
-  // res.status(500).send({
-  //   message: 'Server error',
-  // });
   const { code = 500, message } = err;
 
   res.status(code).send({

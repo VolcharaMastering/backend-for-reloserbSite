@@ -24,27 +24,6 @@ import SupportRequests from "../models/SupportRequests";
 //   }
 // };
 
-// const login: forFunction = async (req, res, next) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ email }).select('+password');
-//     if (!user) {
-//       next(AuthError('Invalid login or password'));
-//       return;
-//     }
-//     const validUser = await bcrypt.compare(password, user.password);
-//     if (!validUser) {
-//       next(AuthError('Invalid login or password'));
-//       return;
-//     }
-//     const token = jwt.sign({
-//       _id: user._id,
-//     }, process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret');
-//     res.status(OK_CODE).send({ data: user, token });
-//   } catch (e) {
-//     next(ServerError('Some bugs on server'));
-//   }
-// };
 
 // const aboutMe: forFunction = async (req, res, next) => {
 //   const myId = req.user._id;
@@ -126,10 +105,10 @@ const createUser: forFunction = async (req, res, next) => {
       next(ConflictError('Email or phone or tg already exists'));
       return;
     }
-    // if (e.name === 'ValidatorError') {
-    //   next(IncorrectData('Validation error'));
-    //   return;
-    // }
+    if (e.name === 'ValidatorError') {
+      next(IncorrectData('Validation error'));
+      return;
+    }
     console.log("cathed error", e);
 
     next(ServerError("Some bugs on server"));
