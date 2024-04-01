@@ -1,7 +1,7 @@
 import NotFound from "../errors/notFound";
 import ServerError from "../errors/serverError";
 import User from "../models/User";
-import { OK_CODE, CODE_CREATED } from "../states/states";
+import { OK_CODE } from "../states/states";
 
 import { forFunction, UsersBody } from "./types";
 

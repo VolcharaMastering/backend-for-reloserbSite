@@ -10,13 +10,6 @@ const validId: ValidationType = (value, helpers) => {
   return value as string;
 };
 
-const textFields: ValidationType = (value, helpers) => {
-  const regExp = /^([\w\s-]*(?<!\.js|\.exe|\.bat|\.dll|\.msi|\.reg|\.pif|\.lnk|\.scr|\.cmd|\.com|\.vbs|\.jar|\.class|\.sh|\.pl|\.py|\.rb|\.ps1|\.php|\.htaccess|\.htpasswd|\.yml|<|>|\|&;\(\)\`\$=))+$/i;
-  if (typeof value !== 'string' || regExp.test(value)) {
-    return helpers.error('any.invalid');
-  }
-  return value as string;
-};
 const tgValidate: ValidationType = (value, helpers) => {
   const telegramRegex = /^(?:https?:\/\/)?t\.me\/[_a-zA-Z0-9]+|@[_a-zA-Z0-9]+$/;
   if (typeof value === 'string' && /^@[_a-zA-Z0-9]+$/.test(value)) {
@@ -28,4 +21,4 @@ const tgValidate: ValidationType = (value, helpers) => {
   return value;
 };
 
-export {ValidationType, validId, textFields, tgValidate};
+export {ValidationType, validId, tgValidate};
