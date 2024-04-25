@@ -8,69 +8,8 @@ import ServerError from "../errors/serverError";
 import User from "../models/User";
 import { OK_CODE, CODE_CREATED } from "../states/states";
 
-import { forFunction, } from "./types";
+import { forFunction, UsersBody} from "./types";
 import SupportRequests from "../models/SupportRequests";
-
-// const getUsers: forFunction = async (req, res, next) => {
-//   try {
-//     const users = await User.find({});
-//     if (!users) {
-//       next(NotFound('There is no users'));
-//       return;
-//     }
-//     res.status(OK_CODE).send(users);
-//   } catch (e) {
-//     next(ServerError('Some bugs on server'));
-//   }
-// };
-
-// const login: forFunction = async (req, res, next) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ email }).select('+password');
-//     if (!user) {
-//       next(AuthError('Invalid login or password'));
-//       return;
-//     }
-//     const validUser = await bcrypt.compare(password, user.password);
-//     if (!validUser) {
-//       next(AuthError('Invalid login or password'));
-//       return;
-//     }
-//     const token = jwt.sign({
-//       _id: user._id,
-//     }, process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret');
-//     res.status(OK_CODE).send({ data: user, token });
-//   } catch (e) {
-//     next(ServerError('Some bugs on server'));
-//   }
-// };
-
-// const aboutMe: forFunction = async (req, res, next) => {
-//   const myId = req.user._id;
-//   try {
-//     const me = await User.findById(myId);
-//     if (!me) {
-//       next(NotFound('No such user'));
-//       return;
-//     }
-//     res.status(OK_CODE).send(me);
-//   } catch (e) {
-//     next(ServerError('Some bugs on server'));
-//   }
-// };  
-
-interface UsersBody {
-    email: string;
-    password: string;
-    name: string;
-    lastName?: string;
-    phoneNumber?: string;
-    tgLink?: string;
-    interestProjects?: object[]
-    sendRequests?: string[];
-    businessData?: string;
-  }
 
 const createUser: forFunction = async (req, res, next) => {
   const {
@@ -126,10 +65,10 @@ const createUser: forFunction = async (req, res, next) => {
       next(ConflictError('Email or phone or tg already exists'));
       return;
     }
-    // if (e.name === 'ValidatorError') {
-    //   next(IncorrectData('Validation error'));
-    //   return;
-    // }
+    if (e.name === 'ValidatorError') {
+      next(IncorrectData('Validation error'));
+      return;
+    }
     console.log("cathed error", e);
 
     next(ServerError("Some bugs on server"));
@@ -137,37 +76,4 @@ const createUser: forFunction = async (req, res, next) => {
 };
 
 
-// const updateUser = (req, res, next) => {
-//   const { email, name } = req.body;
-//   User.findByIdAndUpdate(
-//     req.user._id,
-//     { email, name },
-//     { new: true, runValidators: true },
-//   )
-//     .then((user) => {
-//       if (!user) {
-//         next(NotFound('No such user'));
-//         return;
-//       }
-//       res.send(user);
-//     })
-//     .catch((e) => {
-//       if (e.code === 11000) {
-//         next(ConflictError('User with this email already exists'));
-//         return;
-//       }
-//       if (e.name === 'ValidationError') {
-//         next(IncorrectData('Invalid data'));
-//         return;
-//       }
-//       next(ServerError('Some bugs on server'));
-//     });
-// };
-
-export {
-  // getUsers,
-  // login,
-  // aboutMe,
-  createUser,
-  // updateUser,
-};
+export default createUser;

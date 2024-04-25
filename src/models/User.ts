@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     minlength: [8, 'Minimum 8 characters'],
     select: false, // exclude password from responses
   },
-
+  
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Name is required"],
     maxlength: [150, "Maximum 150 characters"],
+  },
+
+  userRole: {
+    type: String,
+    enum: ['user', 'manager', 'owner'],
+    default: 'user',
   },
 
   phoneNumber: {

@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import NotFound from "../errors/notFound";
 import ServerError from "../errors/serverError";
 import Project from "../models/Projects";
@@ -50,8 +50,6 @@ const sendMail: forFunction = async (req, res, next) => {
   
     try {
       await transporter.sendMail(mailOptions);
-    //   res
-    //     .send({ message: "Feedback email sent successfully" });
         next();
     } catch (error) {
       console.log(error);
