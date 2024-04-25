@@ -37,7 +37,6 @@ const getSupportRequests = (req, res, next) => __awaiter(void 0, void 0, void 0,
 exports.getSupportRequests = getSupportRequests;
 const addSupportRequests = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const requestBody = req.body;
-    console.log(requestBody);
     if (typeof requestBody !== "object" ||
         typeof requestBody.projectId !== "string" ||
         typeof requestBody.clientName !== "string" ||

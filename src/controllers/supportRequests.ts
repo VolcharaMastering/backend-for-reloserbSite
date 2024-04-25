@@ -1,22 +1,11 @@
-import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import NotFound from "../errors/notFound";
 import IncorrectData from "../errors/requestError";
 import ServerError from "../errors/serverError";
 import SupportRequest from "../models/SupportRequests";
 import { OK_CODE, CODE_CREATED } from "../states/states";
+import { forFunction, RequestBody } from './types';
 
-interface forFunction {
-  (req: Request, res: Response, next: NextFunction): void;
-}
-interface RequestBody {
-  projectId: string;
-  clientName: string;
-  clientEmail: string;
-  clientPhone: string;
-  clientMessage: string;
-  businessData: string;
-}
 
 export const getSupportRequests: forFunction = async (req, res, next) => {
   try {
@@ -33,7 +22,6 @@ export const getSupportRequests: forFunction = async (req, res, next) => {
 
 export const addSupportRequests: forFunction = async (req, res, next) => {
   const requestBody = req.body as unknown as RequestBody;
-  console.log(requestBody);
   if (
     typeof requestBody !== "object" ||
     typeof requestBody.projectId !== "string" ||

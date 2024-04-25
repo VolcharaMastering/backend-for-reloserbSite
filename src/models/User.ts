@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import validMail from 'validator';
+import validator from 'validator';
 
 /**
  * User model, describes the properties of a user
@@ -13,33 +13,82 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Email is required'],
     unique: true,
     validate: {
-      validator(val) {
-        return validMail.isEmail(val);
+      validator(val: string) {
+        return validator.isEmail(val);
       },
-      message: 'Invalid email format',
+      message: "Check your email",
     },
   },
   password: {
     type: String,
     required: [true, 'Password is required'],
-    minlength: [6, 'Minimum 6 characters'],
+    minlength: [8, 'Minimum 8 characters'],
     select: false, // exclude password from responses
   },
-
+  
   name: {
     type: String,
     required: [true, 'Name is required'],
-    minlength: [2, 'Minimum 2 characters'],
     maxlength: [120, 'Maximum 120 characters'],
+  },
+
+  lastName: {
+    type: String,
+    required: [true, "Name is required"],
+    maxlength: [150, "Maximum 150 characters"],
+  },
+
+  userRole: {
+    type: String,
+    enum: ['user', 'manager', 'owner'],
+    default: 'user',
+  },
+
+  phoneNumber: {
+    type: String,
+    unique: true,
+    sparse: true,
+    validate: {
+      validator(val: string) {
+        return validator.isMobilePhone(val);
+      },
+      message: "Check your phone number",
+    },
+  },
+
+  tgLink: {
+    type: String,
+    unique: true,
+    sparse: true,
+    validate: {
+      validator(val: string) {
+        return validator.isURL(val);
+      },
+      message: "Check your link to telegram",
+    },
+  },
+
+  interestProjects:{
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "project",
+  },
+
+  sendRequests:{
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "supportRequest",
+  },
+
+  businessData: {
+    type: String,
   },
 });
 
-// eslint-disable-next-line func-names
+
 userSchema.methods.toJSON = function () {
   const user = this.toObject();
   delete user.password;
   return user;
 };
 
-module.exports = mongoose.model('user', userSchema);
+export default mongoose.model('user', userSchema);
 

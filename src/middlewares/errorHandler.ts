@@ -1,9 +1,18 @@
 import express, { Request, Response, NextFunction } from "express";
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).send({
-    message: 'Server error',
+type ServerError = {
+  message: string;
+  code: number;
+}
+
+const errorHandler = (err: ServerError, req: Request, res: Response, next: NextFunction) => {
+  const { code = 500, message } = err;
+
+  res.status(code).send({
+    message: code === 500 ? 'Произошла ошибка на сервере' : message,
   });
+
+  next();
 
   next(err);
 };
